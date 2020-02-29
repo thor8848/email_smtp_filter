@@ -52,7 +52,7 @@ def filter_email(thread_id):
                     requests.get('http://172.31.8.95:5004/filter_number/')
                 temp += 1
             log.debug('send back email data')
-            data = json.loads({
+            data = json.dumps({
                 'emails': result
             })
             requests.post('http://172.31.8.95:5004/result/', data=data)
