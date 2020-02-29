@@ -16,7 +16,7 @@ def filter_email(thread_id):
     time.sleep(randint(0, 100) / 10)
     # 连接 smtp 服务器
     service = SMTP_SSL(host=host)
-    service.debuglevel = 1
+    # service.debuglevel = 1
     service.helo()
     service.ehlo()
     while True:
