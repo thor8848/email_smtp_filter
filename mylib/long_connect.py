@@ -136,22 +136,22 @@ class SMTPSocket:
         else:
             raise SMTPReplyError
 
-    def query_mx(self):
-        try:
-            mx = dns.resolver.query(self.domain, 'MX')
-            preference = 0
-            exchange = ''
-            recode = []
-            for i in mx:
-                if self.debuglevel == 1:
-                    self.logging.debug(f'> dns:{i.preference}{i.exchange}')
-                if int(i.preference) > preference:
-                    recode.append({i.preference, i.exchange})
-                    preference = i.preference
-                    exchange = str(i.exchange).strip('.')
-            return preference, exchange, recode
-        except dns.resolver.NXDOMAIN:
-            return 0, '', []
+    # def query_mx(self):
+    #     try:
+    #         mx = dns.resolver.query(self.domain, 'MX')
+    #         preference = 0
+    #         exchange = ''
+    #         recode = []
+    #         for i in mx:
+    #             if self.debuglevel == 1:
+    #                 self.logging.debug(f'> dns:{i.preference}{i.exchange}')
+    #             if int(i.preference) > preference:
+    #                 recode.append({i.preference, i.exchange})
+    #                 preference = i.preference
+    #                 exchange = str(i.exchange).strip('.')
+    #         return preference, exchange, recode
+    #     except dns.resolver.NXDOMAIN:
+    #         return 0, '', []
 
     def compile_send_command(self, command):
         if self.debuglevel > 0:

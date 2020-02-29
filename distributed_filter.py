@@ -1,7 +1,7 @@
 # -*- coding:utf-8-*-
 import requests
 from requests.exceptions import RequestException
-from mylib.long_connect import SMTPSocket
+from smtplib import SMTP_SSL, SMTPAuthenticationError
 from threadpool import makeRequests, ThreadPool
 from mylib.code_logging import Logger as Log
 import time
@@ -9,18 +9,16 @@ from random import randint
 import json
 
 log = Log('send_email.log').get_log()
+host = 'smtp.qq.com'
 
 
 def filter_email(thread_id):
     time.sleep(randint(0, 100) / 10)
     # 连接 smtp 服务器
-    service = SMTPSocket(log)
-    # service.debuglevel = 1
-    service.socket_connect()
+    service = SMTP_SSL(host=host)
+    service.debuglevel = 1
     service.helo()
     service.ehlo()
-    mail_f = '914081010@qq.com'
-    service.mail_from(mail_f)
     while True:
         try:
             result = []
@@ -28,9 +26,11 @@ def filter_email(thread_id):
             mission_emails = get_mission()
             temp = 0
             success = 0
+            mail_f = '914081010@qq.com'
+            service.mail(mail_f)
             for line in mission_emails:
                 mail_c = line.strip()
-                c, m = service.mail_rcpt(mail_c)
+                c, m = service.rcpt(mail_c)
                 log.debug('{} - {} {}'.format(thread_id, c, m))
                 if c == 250:
                     mail_f = mail_c
@@ -39,8 +39,8 @@ def filter_email(thread_id):
                     log.debug('{} - {}'.format(thread_id, line))
                 if temp % 20 == 0:
                     service.ehlo()
-                    service.mail_from(mail_f)
-                    c, m = service.mail_rcpt(mail_c)
+                    service.mail(mail_f)
+                    c, m = service.rcpt(mail_c)
                     if c == 250:
                         mail_f = mail_c
                         result.append(line)
@@ -77,7 +77,7 @@ request = makeRequests(filter_email, args)
 [pool.putRequest(req) for req in request]
 pool.wait()
 
-
+# filter_email(1)
 # temp = get_mission()
 # data = json.dumps({'emails': temp[0:5000]})
 # requests.post('http://172.31.8.95:5004/result/', data=data)
