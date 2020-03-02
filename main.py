@@ -1,5 +1,6 @@
 # -*-coding:utf-8-*-
 from mylib.long_connect import SMTPSocket
+from smtplib import SMTP_SSL
 from threadpool import makeRequests, ThreadPool
 from mylib.code_logging import Logger as Log
 
@@ -42,4 +43,7 @@ def filter_email(thread_id):
 # request = makeRequests(filter_email, args)
 # [pool.putRequest(req) for req in request]
 # pool.wait()
-filter_email(1)
+# filter_email(1)
+service = SMTP_SSL(host='smtp.global-mail.cn')
+service.debuglevel = 1
+service.login('00@666ph.pw', 'cjm1588')
