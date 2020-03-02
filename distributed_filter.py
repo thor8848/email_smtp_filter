@@ -47,15 +47,15 @@ def filter_email(thread_id):
                         success += 1
                         log.debug('{} - {}'.format(thread_id, line))
                 if success % 100 == 0:
-                    requests.get('http://172.31.8.103:5004/success_number/')
+                    requests.get('http://172.31.8.104:5004/success_number/')
                 if temp % 100 == 0:
-                    requests.get('http://172.31.8.103:5004/filter_number/')
+                    requests.get('http://172.31.8.104:5004/filter_number/')
                 temp += 1
             log.debug('send back email data')
             data = json.dumps({
                 'emails': result
             })
-            requests.post('http://172.31.8.103:5004/result/', data=data)
+            requests.post('http://172.31.8.104:5004/result/', data=data)
             log.debug('send back data success')
         except RequestException:
             time.sleep(10)
@@ -64,7 +64,7 @@ def filter_email(thread_id):
 
 
 def get_mission():
-    response = requests.get('http://172.31.8.103:5004/filter/')
+    response = requests.get('http://172.31.8.104:5004/filter/')
     data = response.json()
     return data['mission_emails']
 
@@ -80,4 +80,4 @@ pool.wait()
 # filter_email(1)
 # temp = get_mission()
 # data = json.dumps({'emails': temp[0:5000]})
-# requests.post('http://172.31.8.103:5004/result/', data=data)
+# requests.post('http://172.31.8.104:5004/result/', data=data)
