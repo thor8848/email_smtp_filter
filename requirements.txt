@@ -2,3 +2,4 @@ peewee
 threadpool
 pymysql
 redis
+dnspython
