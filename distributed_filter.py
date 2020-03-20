@@ -46,11 +46,11 @@ def filter_email(thread_id):
                         result.append(line)
                         success += 1
                         log.debug('{} - {}'.format(thread_id, line))
-                if success % 100 == 0:
-                    requests.get('http://172.31.8.109:5004/success_number/')
-                if temp % 100 == 0:
-                    requests.get('http://172.31.8.109:5004/filter_number/')
-                temp += 1
+                # if success % 100 == 0:
+                #     requests.get('http://172.31.8.109:5004/success_number/')
+                # if temp % 100 == 0:
+                #     requests.get('http://172.31.8.109:5004/filter_number/')
+                # temp += 1
             log.debug('send back email data')
             data = json.dumps({
                 'emails': result
