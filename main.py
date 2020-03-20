@@ -36,14 +36,14 @@ def filter_email(thread_id):
         result.flush()
 
 
-# pool = ThreadPool(1)
-# args = []
-# for x in range(1, 41):
-#     args.append(x)
-# request = makeRequests(filter_email, args)
-# [pool.putRequest(req) for req in request]
-# pool.wait()
+pool = ThreadPool(1)
+args = []
+for x in range(1, 41):
+    args.append(x)
+request = makeRequests(filter_email, args)
+[pool.putRequest(req) for req in request]
+pool.wait()
 # filter_email(1)
-service = SMTP_SSL(host='smtp.global-mail.cn')
-service.debuglevel = 1
-service.login('00@666ph.pw', 'cjm1588')
+# service = SMTP_SSL(host='smtp.global-mail.cn')
+# service.debuglevel = 1
+# service.login('00@666ph.pw', 'cjm1588')
