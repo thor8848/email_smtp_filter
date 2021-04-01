@@ -55,7 +55,7 @@ def filter_email(thread_id):
             data = json.dumps({
                 'emails': result
             })
-            requests.post('http://172.31.8.109:5004/result/', data=data)
+            requests.post('http://127.0.0.1:5000/result/', data=data)
             log.debug('send back data success')
         except RequestException:
             time.sleep(10)
@@ -64,7 +64,7 @@ def filter_email(thread_id):
 
 
 def get_mission():
-    response = requests.get('http://172.31.8.109:5004/filter/')
+    response = requests.get('http://127.0.0.1:5000/filter/')
     data = response.json()
     return data['mission_emails']
 

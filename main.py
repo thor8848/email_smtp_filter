@@ -5,11 +5,10 @@ from threadpool import makeRequests, ThreadPool
 from mylib.code_logging import Logger as Log
 
 log = Log('send_email.log').get_log()
+result = open('mail/8位QQ邮箱.txt', 'a+', encoding='utf-8')
 
 
-def filter_email(thread_id):
-    file = open(f'source/1.txt', 'r', encoding='utf-8')
-    result = open('result.txt', 'a+', encoding='utf-8')
+def filter_email(thread_mail):
     # 连接 smtp 服务器
     service = SMTPSocket(log)
     service.debuglevel = 1
@@ -17,33 +16,30 @@ def filter_email(thread_id):
     service.ehlo()
     mail_f = '914081010@qq.com'
     service.mail_from(mail_f)
-    for line in file:
-        mail_c = line.strip()
+    for line in range(thread_mail, thread_mail + 1000):
+        mail_c = f"{line}@qq.com"
         c, m = service.mail_rcpt(mail_c)
-        log.debug(f'{thread_id} - {c} {m}')
+        log.debug(f'{c} {m}')
         if c == 250:
             mail_f = mail_c
-            result.write(line)
-            log.debug(f'{thread_id} - {line.strip()}')
+            result.write(f"{line}@qq.com\n")
+            log.debug(f"{line}@qq.com")
         if c == 452:
             service.ehlo()
             service.mail_from(mail_f)
             c, m = service.mail_rcpt(mail_c)
             if c == 250:
                 mail_f = mail_c
-                result.write(line)
-                log.debug(f'{thread_id} - {line.strip()}')
+                result.write(f"{line}@qq.com\n")
+                log.debug(f"{line}@qq.com")
         result.flush()
 
 
-pool = ThreadPool(1)
+pool = ThreadPool(40)
 args = []
-for x in range(1, 41):
+temp = 0
+for x in range(10000000, 100000000, 1000):
     args.append(x)
 request = makeRequests(filter_email, args)
 [pool.putRequest(req) for req in request]
 pool.wait()
-# filter_email(1)
-# service = SMTP_SSL(host='smtp.global-mail.cn')
-# service.debuglevel = 1
-# service.login('00@666ph.pw', 'cjm1588')
